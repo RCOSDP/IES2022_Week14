@@ -1,0 +1,25 @@
+#ポケモンデータの読み込み
+dat <- read.csv(file="pokemon.csv", header=TRUE, sep=",",fileEncoding="Shift-JIS")	#Read pokemon data(pokemon.csv)
+dat																					#Display pokemon data
+dat[25,]																			#Display 25th Pokemon
+summary(dat$Weight.kg)																#Check the distribution of weight
+hist(dat$Weight.kg, breaks = 10)													#Plot the distribution of weight
+
+#外れ値の確認
+dat1 <- subset(dat, select=c(HP, Attack, Defense, Weight.kg))
+plot(dat1)																			#scatter plot of HP, Attack, Deffence, and Weight
+
+#外れ値の除去
+filter <- dat1$HP<200 & dat1$Defense<200 & dat1$Weight.kg<600
+dat2 <- dat1[filter,]
+plot(dat2)
+
+#重回帰分析
+kaiki<- lm(Weight.kg~HP+Attack+Defense, data=dat2)									#Use lm function
+zdat <- scale(dat2)																	#standardizing the data"
+zdat <- data.frame(zdat)															#Convert to a data frame for regression analysis
+zkaiki<- lm(Weight.kg~HP+Attack+Defense, data=zdat)									#Regression analysis using standardized data
+#結果の出力
+summary(kaiki)																		#Output partial regression coefficient\n",
+summary(zkaiki)																		#Output standard partial regression coefficient"
+
